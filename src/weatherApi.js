@@ -1,13 +1,19 @@
 import axios from 'axios';
 
 const API_KEY = 'BUVXA3ERKWD8HN9CZAXXGGDB6';
+const CORS_PROXY = 'https://cors-anywhere.herokuapp.com/';
 const BASE_URL = 'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline';
 
 export const fetchWeatherData = async (location, unit = 'metric') => {
     try {
         const url = `${BASE_URL}/${location}/today?unitGroup=${unit}&include=current&key=${API_KEY}&contentType=json`;
         
-        const response = await axios.get(url);
+        const response = await axios.get(`${CORS_PROXY}${url}`, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        });
+        
         console.log('Weather Data:', response.data);
         
         return {
